@@ -15,10 +15,13 @@ exports.store = async (req, res) => {
         console.error('Error creating user:', error);
         res.status(500).json({ error: 'Failed to create user' });
     }
-    
+
 }
 
-exports.list = (req, res) => {
+exports.list = async (req, res) => {
+
+    const users = await User.findAll();
+
 
 }
 
