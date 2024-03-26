@@ -34,7 +34,7 @@ exports.list = async (req, res) => {
     // If no ID provided, fetch all users
     const users = await db.User.findAll();
     return res.status(200).json({ users: users });
-}
+} 
 
 // Route handler for deleting a user
 exports.delete = async (req, res) => {
