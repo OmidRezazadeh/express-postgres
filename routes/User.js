@@ -5,4 +5,5 @@ router.post("/store", UserController.store);
 router.get("/list/:id?", UserController.list);
 router.delete("/delete/:id", UserController.delete);
 router.put("/edit/:id", UserController.edit);
+router.get("/seeder", UserController.mockSeeder);
 module.exports = router;

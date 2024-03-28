@@ -6,12 +6,13 @@
   "scripts": {
     "start": "nodemon cross-env NODE_ENV=production node index",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate":"npx sequelize-cli db:migrate:undo"
+    "migrate": "npx sequelize-cli db:migrate:undo"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

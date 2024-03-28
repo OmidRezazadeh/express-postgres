@@ -1,5 +1,5 @@
 const db = require('../models/index'); // Importing the Sequelize models
-
+const { faker } = require('@faker-js/faker');
 // Route handler for creating a new user
 exports.store = async (req, res) => {
     const name = req.body.name;
@@ -65,3 +65,20 @@ exports.edit = async (req, res) => {
         res.status(500).json({ "error": "Internal Server Error" });
     }
 }
+ exports.mockSeeder= async (req,res)=>{
+    try {
+        const mockUsers = []; // Define mockUsers array to store created users
+    for (let i = 0; i < 20; i++) {
+        const user = await db.User.create({
+          name: faker.person.firstName(),
+          email: faker.internet.email(),
+          password: faker.internet.password()
+        });
+        mockUsers.push(user);
+      }
+      console.log(`Successfully created mock users.`);
+      res.status(200).json({ mockUsers: mockUsers });
+    } catch (error) {
+      console.error('Error creating mock users:', error);
+    }
+ }
