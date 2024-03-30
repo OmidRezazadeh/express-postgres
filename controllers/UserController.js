@@ -1,5 +1,6 @@
 const db = require('../models/index'); // Importing the Sequelize models
 const { faker } = require('@faker-js/faker');
+const { Op, where } = require("sequelize");
 // Route handler for creating a new user
 exports.store = async (req, res) => {
     const name = req.body.name;
@@ -34,7 +35,7 @@ exports.list = async (req, res) => {
     // If no ID provided, fetch all users
     const users = await db.User.findAll();
     return res.status(200).json({ users: users });
-} 
+}
 
 // Route handler for deleting a user
 exports.delete = async (req, res) => {
@@ -65,20 +66,122 @@ exports.edit = async (req, res) => {
         res.status(500).json({ "error": "Internal Server Error" });
     }
 }
- exports.mockSeeder= async (req,res)=>{
+exports.mockSeeder = async (req, res) => {
     try {
-        const mockUsers = []; // Define mockUsers array to store created users
-    for (let i = 0; i < 20; i++) {
-        const user = await db.User.create({
-          name: faker.person.firstName(),
-          email: faker.internet.email(),
-          password: faker.internet.password()
-        });
-        mockUsers.push(user);
-      }
-      console.log(`Successfully created mock users.`);
-      res.status(200).json({ mockUsers: mockUsers });
+        const mockUsers = [];
+        for (let i = 0; i < 20; i++) {
+            const user = await db.User.create({
+                name: faker.person.firstName(),
+                email: faker.internet.email(),
+                password: faker.internet.password()
+            });
+            mockUsers.push(user);
+        }
+        console.log(`Successfully created mock users.`);
+        res.status(200).json({ mockUsers: mockUsers });
     } catch (error) {
-      console.error('Error creating mock users:', error);
+        console.error('Error creating mock users:', error);
     }
- }
+}
+exports.findmethod = async (req, res) => {
+
+
+
+
+    // try{
+    // const user = await db.User.
+    // }catch (error) {
+    // console.log(error);
+    // }
+
+//  like not
+    // try {
+    //     const user = await db.User.findAll({
+    //         where:{
+    //             id:{
+    //                 [Op.not]: 20
+    //             }
+    //         }
+    //     });
+    //     res.status(200).json({ "user": user });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+    // like or
+    // try {
+    //     const users = await db.User.findAll({
+    //         where: {
+    //             [Op.or]: [
+    //                 { name: 'ahmad' },
+    //                 { id: 3 }
+    //             ]
+    //         }
+    //     });
+    //     res.status(200).json({ "users": users })
+    // } catch (error) {
+
+    // }
+
+
+    //  like and
+    // try {
+    //     const user = await db.User.findAll({
+    //         where: {
+    //             id: 3,
+    //             name: "test",
+    //         }
+    //     });
+    //     res.status(200).json({ user: user });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+    // try {
+    //     const user = await db.User.findAll({
+    //         where: { id: { [Op.lt]: 4} }
+    //     });
+    //     res.status(200).json({ user: user });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+
+    //    return  only name as name column
+    // try {
+    //     const user = await db.User.findAll({attributes: [
+    //         ['name', 'names'], // Alias 'names' for the 'name' attribute
+    //         ['email', 'emails'] // Alias 'emails' for the 'email' attribute
+    //     ]  });
+    //     res.status(200).json({ user });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+    //    return  only name column
+    // try {
+    //     const user = await db.User.findAll({
+    //         attributes: ['name']
+    //     });
+    //     res.status(200).json({ user });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+    //remove name column
+    // try {
+    //     const users = await db.User.findAll({
+    //         attributes: { exclude: ['name'] }
+    //     });
+    //     res.status(200).json({ users });
+
+    // } catch (eror) {
+    //     console.log(eror);
+    // }
+
+}
