@@ -1,8 +1,9 @@
-const express =require('express');
+const express = require('express');
 const connectDB = require("./utils/database.js");
 const dotenv = require('dotenv');
 const app = express();
 const router = require('./routes/User.js');
+const Postrouter = require('./routes/Post.js');
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use('/api/v1/users', router);
+app.use('/api/v1/posts', Postrouter);
 
 connectDB.authenticate()
     .then(() => {

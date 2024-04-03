@@ -87,14 +87,196 @@ exports.findmethod = async (req, res) => {
 
 
 
+    //like instances/rows after 8  limit 5
+    // try {
+    //     const users = await db.User.findAll({ offset: 5, limit: 5 });
+    //     res.status(200).json({ "users": users });
+    // } catch (error) {
+    //     console.log(error);
+    // }
 
+
+    //like  return conut 
+    // try {
+    //     const users = await db.User.count({
+    //         where: {
+    //             id: {
+    //                 [Op.gt]: 25
+    //             }
+    //         }
+    //     });
+    //     res.status(200).json({ "users": users });
+    // } catch (error) {
+
+    // }
+
+
+    //like instances/rows after 8
+    // try {
+    //     const users = await db.User.findAll({ offset: 8 });
+    //     res.status(200).json({ "users": users });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+
+
+
+
+
+    //like lilmit
+    // try {
+    //     const users = await db.User.findAll({limit:10});
+    //     res.status(200).json({ "users": users });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+
+
+
+    // link order find one
+    // try {
+    //     const users = await db.User.findOne({order:[['name', 'DESC']]});
+    //     res.status(200).json({ "users": users });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+    // link order
+    // try {
+    //     const users = await db.User.findAll({order:[['name', 'DESC']]});
+    //     res.status(200).json({ "users": users });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+    // like creating multiple records 
+    // try {
+    //     const users = await db.User.bulkCreate([
+    //         { name: 'name', email: 'email', password: 'password' },
+    //         { name: 'name1', email: 'email1', password: 'password1' },
+    //         { name: 'name2', email: 'email2', password: 'password2' }
+    //     ]);
+    //     res.status(200).json({ "users": users });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+    // like update
+    // try {
+    //     const user = await db.User.update({name:"ahmad"},
+    //     {where: {name:"test"}
+    //         });
+    //     res.status(200).json({ "user": "ok" });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+    // like not
+    // try {
+    //     const user = await db.User.findAll({
+    //         where: {
+    //             [Op.not]: [
+    //                 {
+    //                     id: [4, 8]     
+    //                 }
+    //             ]
+    //         }
+    //     });
+    //     res.status(200).json({ "user": user });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+
+
+
+
+    // like in
+    // try {
+    //     const users = await db.User.findAll({
+    //         where: {
+    //             id: [4, 8]
+    //         }
+    //     });
+    //     res.status(200).json({ "users": users });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
+
+
+
+    //  find or create user 
+    // try {
+    //     const [user, created] = await db.User.findOrCreate({
+    //         //if find user name is  alivia 
+    //         where: { name: "Alivia" },
+    //         //else make user  with name alivia and email password
+    //         defaults: {
+    //             email: 'evil@example.com',
+    //             password: "retertrtrt"
+    //         }
+    //     });
+
+    //     if (created) {
+    //         res.status(200).json({ 'User created:': user });
+    //     } else {
+    //         res.status(404).json({ 'User found:': user });
+    //     }
+
+    // } catch (error) {
+    //     console.log(error)
+    // }
+
+
+
+
+    // like  between
     // try{
-    // const user = await db.User.
+    // const users = await db.User.findAll({
+    //     where: {
+    //         id:{
+    //             [Op.between]: [4,8]
+    //         }
+    //     }
+    // });
+    // res.status(200).json({ "users": users });
     // }catch (error) {
     // console.log(error);
     // }
 
-//  like not
+
+
+
+    //    like %na%
+    // try{
+    //     const users = await db.User.findAll({
+    //         where: {
+    //             name:{
+    //                 [Op.substring]: 'na'
+    //             }
+    //         }
+    //     });
+    //     res.status(200).json({ "users": users });
+    //     }catch (error) {
+    //     console.log(error);
+    //     }
+
+
+
+
+
+
+
+    //  like not
     // try {
     //     const user = await db.User.findAll({
     //         where:{
@@ -184,4 +366,44 @@ exports.findmethod = async (req, res) => {
     //     console.log(eror);
     // }
 
+
+    // show row and count 
+    // try {
+    //     const { count, rows } = await db.User.findAndCountAll({
+    //         where: { id: { [Op.gt]: 4 } },
+    //     });
+    //     res.status(200).json({ "count": count, "rows": rows });
+    // } catch (error) {
+
+    // }
+
 }
+
+
+exports.store = async (req, res) => {
+    const title = "title test";
+    const description = "description test sdfsdfkgjniiguh";
+    const userId = 4;
+
+    try {
+        // Assume you have user data available, maybe from a request or cached earlier
+        const userData = { id: userId, name: "User Name", email: "user@example.com" }; // Example user data
+
+        const post = await db.Post.create({
+            title: title,
+            description: description,
+            userId: userId
+        });
+
+        // Construct a response object manually
+        const response = {
+            ...post.toJSON(), // Convert Sequelize model instance to a plain object
+            author: userData // Include user data manually
+        };
+
+        res.status(201).json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("An error occurred while creating the post.");
+    }
+};
