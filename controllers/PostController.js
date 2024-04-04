@@ -1,4 +1,5 @@
 const db = require('../models/index'); // Importing the Sequelize models
+const {transformData} = require('../utils/PostTransformData');
 exports.store = async (req, res) => {
 
     //    fatch data from user posts
@@ -62,5 +63,56 @@ exports.store = async (req, res) => {
     // });
     //res.status(200).json({ "posts": posts});
 
+
+
+    //fatch single post data 
+    // try {
+    //     const post = await db.Post.findByPk(4, {
+    //         include: [{
+    //             model: db.User,
+    //             as: 'author' 
+    //         }]
+    //     });
+
+    //     const user = await post.author;
+    //     res.status(200).json({
+    //         "data": {
+    //             "post": {
+    //                 "id": post.id,
+    //                 "title": post.title,
+    //                 "discription": post.discription,
+    //                 "created_at": post.createdAt,  
+    //             },
+    //             "user": {
+    //                 "id": user.id,
+    //                 "name": user.name,
+    //                 "email": user.email
+    //             }
+    //         }
+    //     });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+    // const page = req.query.page || 1;
+    // const limit = 2;
+
+    try {
+        const posts = await db.Post.findAll({
+            include: [{
+                model: db.User,
+                as: 'author'
+            }]
+        });
+
+        const postData = await transformData(posts);
+
+        res.status(200).json(postData);
+
+    } catch (error) {
+        console.log(error);
+    }
 }
+
+
 
