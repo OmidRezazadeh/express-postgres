@@ -14,7 +14,15 @@ exports.transformData = (data) => {
         }
     });
     return {
-        posts: transformedData
+        posts: transformedData,
+        meta:{
+            total:data.length,
+            current_page:2,
+            per_page:3,
+            next_page:4,
+            
+
+        }
     };
 
 };

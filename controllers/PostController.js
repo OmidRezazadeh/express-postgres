@@ -1,5 +1,5 @@
 const db = require('../models/index'); // Importing the Sequelize models
-const {transformData} = require('../utils/PostTransformData');
+const { transformData } = require('../utils/PostTransformData');
 exports.store = async (req, res) => {
 
     //    fatch data from user posts
@@ -94,25 +94,32 @@ exports.store = async (req, res) => {
     //     console.log(error);
     // }
 
-    // const page = req.query.page || 1;
-    // const limit = 2;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
 
     try {
+        const offset = (page - 1) * limit;
         const posts = await db.Post.findAll({
             include: [{
                 model: db.User,
                 as: 'author'
-            }]
+            }],
+            offset,
+            limit,
         });
+        const totalPages = Math.ceil(posts.length);
+        const nextPage = page < totalPages ? page + 1 : null;
 
-        const postData = await transformData(posts);
+        const meta = {
+            current_page: page,
+            next_page: nextPage,
+            data: posts,
+        };
 
-        res.status(200).json(postData);
+        res.status(200).json({ "meta": meta });
 
     } catch (error) {
         console.log(error);
     }
+
 }
-
-
-
