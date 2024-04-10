@@ -1,6 +1,7 @@
 const db = require('../models/index'); // Importing the Sequelize models
 const { faker } = require('@faker-js/faker');
 const { Op, where } = require("sequelize");
+
 // Route handler for creating a new user
 exports.store = async (req, res) => {
     const name = req.body.name;
@@ -381,29 +382,73 @@ exports.findmethod = async (req, res) => {
 
 
 exports.store = async (req, res) => {
-    const title = "title test";
-    const description = "description test sdfsdfkgjniiguh";
-    const userId = 4;
 
+    const name = "name for profile";
+    const description = "description for profile";
+    const email = "emailForProfile@gmail.com";
+    const password = "passwordForProfile";
+    const call = 21783561;
+    let transaction;
     try {
-        // Assume you have user data available, maybe from a request or cached earlier
-        const userData = { id: userId, name: "User Name", email: "user@example.com" }; // Example user data
+     
+        transaction = await db.sequelize.transaction();
+        const user = await db.User.create({
+            name: name,
+            email: email,
+            password
+        }, { transaction });
 
-        const post = await db.Post.create({
-            title: title,
-            description: description,
-            userId: userId
-        });
-
-        // Construct a response object manually
-        const response = {
-            ...post.toJSON(), // Convert Sequelize model instance to a plain object
-            author: userData // Include user data manually
-        };
-
-        res.status(201).json(response);
-    } catch (err) {
-        console.log(err);
-        res.status(500).send("An error occurred while creating the post.");
+        const profile = await db.Profile.create(
+            {
+                description: description,
+                call: call,
+                userId: 5,
+            },
+            { transaction }
+        );
+        await transaction.commit();
+        res.status(200).json({ profile, user });
+    } catch (error) {
+        if (transaction){
+             await transaction.rollback();
+            }
+        throw error;
+  
     }
-};
+
+
+
+
+
+
+
+
+    // make post
+
+    // const title = "title test";
+    // const description = "description test sdfsdfkgjniiguh";
+    // const userId = 4;
+
+
+    // try {
+    //     // Assume you have user data available, maybe from a request or cached earlier
+    //     const userData = { id: userId, name: "User Name", email: "user@example.com" }; // Example user data
+
+    //     const post = await db.Post.create({
+    //         title: title,
+    //         description: description,
+    //         userId: userId
+    //     });
+
+    //     // Construct a response object manually
+    //     const response = {
+    //         ...post.toJSON(), // Convert Sequelize model instance to a plain object
+    //         author: userData // Include user data manually
+    //     };
+
+    //     res.status(201).json(response);
+    // } catch (err) {
+    //     console.log(err);
+    //     res.status(500).send("An error occurred while creating the post.");
+    // }
+}
