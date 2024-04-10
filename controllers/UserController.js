@@ -383,38 +383,55 @@ exports.findmethod = async (req, res) => {
 
 exports.store = async (req, res) => {
 
-    const name = "name for profile";
-    const description = "description for profile";
-    const email = "emailForProfile@gmail.com";
-    const password = "passwordForProfile";
-    const call = 21783561;
-    let transaction;
-    try {
-     
-        transaction = await db.sequelize.transaction();
-        const user = await db.User.create({
-            name: name,
-            email: email,
-            password
-        }, { transaction });
 
-        const profile = await db.Profile.create(
-            {
-                description: description,
-                call: call,
-                userId: 5,
-            },
-            { transaction }
-        );
-        await transaction.commit();
-        res.status(200).json({ profile, user });
-    } catch (error) {
-        if (transaction){
-             await transaction.rollback();
-            }
-        throw error;
-  
-    }
+    // many-to-many relationship
+    // try {
+    //     const role = await db.Role.create({ name: 'admin' }); 
+    //     const user = await db.User.findByPk(1); 
+    //     const userRole = await user.addRole(role, { through: { userId: user.id, roleId: role.id } });
+
+    //     res.status(200).json({ "user-role": userRole });
+    // } catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ error: 'Internal server error' });
+    // }
+
+
+
+
+    //profile user
+    // const name = "name for profile";
+    // const description = "description for profile";
+    // const email = "emailForProfile@gmail.com";
+    // const password = "passwordForProfile";
+    // const call = 21783561;
+    // let transaction;
+    // try {
+
+    //     transaction = await db.sequelize.transaction();
+    //     const user = await db.User.create({
+    //         name: name,
+    //         email: email,
+    //         password
+    //     }, { transaction });
+
+    //     const profile = await db.Profile.create(
+    //         {
+    //             description: description,
+    //             call: call,
+    //             userId: user.id,
+    //         },
+    //         { transaction }
+    //     );
+    //     await transaction.commit();
+    //     res.status(200).json({ profile, user });
+    // } catch (error) {
+    //     if (transaction){
+    //          await transaction.rollback();
+    //         }
+    //     throw error;
+
+    // }
 
 
 

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Post, { foreignKey: 'userId', as: 'posts' });
       User.hasOne(models.Profile, { foreignKey: 'userId', as: 'profile' });
-
+      User.belongsToMany(models.Role, {through: 'UserRole',foreignKey: 'userId'},);
     }
   }
   User.init({
