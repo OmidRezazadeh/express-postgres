@@ -23,7 +23,10 @@ module.exports = {
           key: 'id'       // Name of the target column
         }
       },
-      
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -32,6 +35,8 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    }, {
+      paranoid: true // Enable paranoid mode
     });
   },
   async down(queryInterface, Sequelize) {

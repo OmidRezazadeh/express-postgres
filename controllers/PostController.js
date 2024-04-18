@@ -1,5 +1,6 @@
 const db = require('../models/index'); // Importing the Sequelize models
 const { transformData } = require('../utils/PostTransformData');
+const { Op, where } = require("sequelize");
 exports.store = async (req, res) => {
 
     //    fatch data from user posts
@@ -54,14 +55,14 @@ exports.store = async (req, res) => {
     //     res.status(200).json({ "posts": posts});
 
 
-    //  fatch all data with relation user 
+    //fatch all data with relation user 
     // const posts = await db.Post.findAll({
     //     include: [{
     //         model: db.User,
     //         as: 'author' // This is the name specified in the association
     //     }]
     // });
-    //res.status(200).json({ "posts": posts});
+    // res.status(200).json({ "posts": posts});
 
 
 
@@ -94,32 +95,47 @@ exports.store = async (req, res) => {
     //     console.log(error);
     // }
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 5;
 
-    try {
-        const offset = (page - 1) * limit;
-        const posts = await db.Post.findAll({
-            include: [{
-                model: db.User,
-                as: 'author'
-            }],
-            offset,
-            limit,
-        });
-        const totalPages = Math.ceil(posts.length);
-        const nextPage = page < totalPages ? page + 1 : null;
+    // try {
+    //     const offset = (page - 1) * limit;
+    //     const posts = await db.Post.findAll({
+    //         include: [{
+    //             model: db.User,
+    //             as: 'author'
+    //         }],
+    //         offset,
+    //         limit,
+    //     });
+    //     const totalPages = Math.ceil(posts.length);
+    //     const nextPage = page < totalPages ? page + 1 : null;
 
-        const meta = {
-            current_page: page,
-            next_page: nextPage,
-            data: posts,
-        };
+    //     const meta = {
+    //         current_page: page,
+    //         next_page: nextPage,
+    //         data: posts,
+    //     };
 
-        res.status(200).json({ "meta": meta });
+    //     res.status(200).json({ "meta": meta });
 
-    } catch (error) {
-        console.log(error);
-    }
+    // } catch (error) {
+    //     console.log(error);
+    // }
+ 
+    //return only paranoid data 
+    // const posts = await db.Post.findAll({
+    //     paranoid: false, 
+    //     where: {
+    //       deletedAt: { [Op.ne]: null } 
+    //     }
+    //   })
+    // res.status(200).json(posts);
+}
 
+exports.delete = async (req, res) => {
+    const id = 1;
+    // Deleting the user with the specified ID
+    await db.Post.destroy({ where: { id: id } });
+    return res.status(200).json({ "message": "ok" });
 }
