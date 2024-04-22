@@ -2,6 +2,7 @@ const db = require('../models/index'); // Importing the Sequelize models
 const { faker } = require('@faker-js/faker');
 const { Op, where } = require("sequelize");
 
+
 // Route handler for creating a new user
 exports.store = async (req, res) => {
     const name = req.body.name;
@@ -36,6 +37,9 @@ exports.list = async (req, res) => {
     // If no ID provided, fetch all users
     const users = await db.User.findAll();
     return res.status(200).json({ users: users });
+
+
+
 }
 
 // Route handler for deleting a user
@@ -387,7 +391,7 @@ exports.store = async (req, res) => {
     // many-to-many relationship
     // try {
     //     const role = await db.Role.create({ name: 'admin' }); 
-    //     const user = await db.User.findByPk(1); 
+    //     const user = await db.User.findByPk(2); 
     //     const userRole = await user.addRole(role, { through: { userId: user.id, roleId: role.id } });
 
     //     res.status(200).json({ "user-role": userRole });
@@ -468,4 +472,48 @@ exports.store = async (req, res) => {
     //     console.log(err);
     //     res.status(500).send("An error occurred while creating the post.");
     // }
+}
+
+exports.egerLoad = async (req, res) => {
+    try {
+        // const user = await db.User.findAll({
+        //     include: [{
+        //         model: db.Profile,
+        //         as: 'profile',
+        //         required: true,
+        //         where:{
+        //             id:1,
+        //         }
+        //     }],
+        // });
+
+        const user = await db.User.findAndCountAll({
+
+            include: [
+                {
+                    model: db.Profile,
+                    as: 'profile',
+                  
+                },
+                {
+                    model: db.Post,
+                    as: 'posts',
+                }
+
+            ],
+        });
+
+
+        // const user =  await db.User.findAll({ include: { all: true,nested: true } });
+
+
+        res.status(200).json({ "user": user });
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+exports.createEgreLoad=async(req,res)=>{
+
 }

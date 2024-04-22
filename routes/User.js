@@ -7,4 +7,6 @@ router.delete("/delete/:id", UserController.delete);
 router.put("/edit/:id", UserController.edit);
 router.get("/seeder", UserController.mockSeeder);
 router.get("/find", UserController.findmethod);
+router.get("/egerLoad",UserController.egerLoad);
+router.post("/createEgreLoad",UserController.createEgreLoad);
 module.exports = router;
